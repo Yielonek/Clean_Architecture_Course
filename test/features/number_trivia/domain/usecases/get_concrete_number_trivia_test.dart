@@ -24,7 +24,7 @@ void main() {
 
   test('should get trivia for the number from the repository', () async {
     // arrange
-    when(mockNumberTriviaRepository.getConcreteNumberTrivia(any))
+    when(mockNumberTriviaRepository.getConcreteNumberTrivia(tNumber))
         .thenAnswer((realInvocation) async => const Right(tNumberTrivia));
 
 //  action
