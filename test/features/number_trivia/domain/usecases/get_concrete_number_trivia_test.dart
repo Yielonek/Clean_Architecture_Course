@@ -6,33 +6,39 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-class MockNumberTriviaRepository extends Mock
-    implements NumberTriviaRepository {}
+import 'get_concrete_number_trivia_test.mocks.dart';
 
-@GenerateMocks([MockNumberTriviaRepository])
+
+// class MockNumberTriviaRepository extends Mock
+//     implements NumberTriviaRepository {}
+
+@GenerateMocks([NumberTriviaRepository])
 void main() {
   late GetConcreteNumberTrivia usecase;
   late MockNumberTriviaRepository mockNumberTriviaRepository;
 
   setUp(() {
     mockNumberTriviaRepository = MockNumberTriviaRepository();
-    usecase = GetConcreteNumberTrivia(repository: mockNumberTriviaRepository);
+    usecase = GetConcreteNumberTrivia(mockNumberTriviaRepository);
   });
 
-  const tNumber = 1;
-  const tNumberTrivia = NumberTrivia(text: 'test', number: 1);
+  final testNumber = 1;
+  final testNumberTrivia = NumberTrivia(number: 1, text: 'test trivia');
 
-  test('should get trivia for the number from the repository', () async {
-    // arrange
-    when(mockNumberTriviaRepository.getConcreteNumberTrivia(tNumber))
-        .thenAnswer((realInvocation) async => const Right(tNumberTrivia));
+  test(
+    'should get trivia for the number from the repo',
+    () async {
+      // arrange
+      when(mockNumberTriviaRepository.getConcreteNumberTrivia(testNumber))
+          .thenAnswer((_) async => Right(testNumberTrivia));
 
-//  action
-    final result = await usecase(Params(number: tNumber));
+      // act
+      final result = await usecase(Params(number: testNumber)); //we can use it instead of usecase.call(testNumber)
 
-// assert
-    expect(result, const Right(tNumberTrivia));
-    verify(mockNumberTriviaRepository.getConcreteNumberTrivia(tNumber));
-    verifyNoMoreInteractions(mockNumberTriviaRepository);
-  });
+      //assert
+      expect(result, Right(testNumberTrivia));
+
+      verify(mockNumberTriviaRepository.getConcreteNumberTrivia(testNumber));
+    },
+  );
 }

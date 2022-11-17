@@ -7,14 +7,14 @@ import '../entities/number_trivia.dart';
 import '../repositories/number_trivia_repository.dart';
 
 class GetConcreteNumberTrivia implements UseCase<NumberTrivia, Params> {
-  const GetConcreteNumberTrivia({this.repository});
-  final NumberTriviaRepository? repository;
+   GetConcreteNumberTrivia(this.repository);
+  final NumberTriviaRepository repository;
 
   @override
-  Future<Either<Failure?, NumberTrivia?>?> call(
+  Future<Either<Failure, NumberTrivia>> call(
     Params params,
   ) async {
-    return await repository?.getConcreteNumberTrivia(params.number);
+    return await repository.getConcreteNumberTrivia(params.number);
   }
 }
 
